@@ -1,0 +1,81 @@
+
+基本操作步骤Steps:
+拷贝源repo： git clone -o root https://github.dev.xero.com/Xero/USTaxServices.git
+Fork 出自己的repo；
+添加对应自己fork的远程repo：Git remote add kcfork https://github.dev.xero.com/dev-kanchen/USTaxServices.git
+查看具体的git远程信息: Git remote -v 
+获取某远程origin的分支信息： Git fetch origin
+获取某远程origin的分支信息并更新到当前分支: Git pull origin master
+新建并切换分支：Git checkout -b branchname origin/branchname
+将远程分支同步到当前分支: 
+Metric 1: git checkout currentbranchname; git pull origin originbranchname;  --> 会出现一个merge commit；
+Metric 2: git rebase remoteXXX
+
+
+
+
+删除分支：Git branch -D branchname
+切换分支： Git checkout branchname
+
+Git cherry pick功能：
+切换到要更新的分支： git checkout newbranch
+将之前gitlog看到的commit拿到当前分支上来：git cherry-pick 38361a68 （hashcode不用写全）
+
+
+
+Git 对比：
+HEAD   就是当前活跃分支的游标
+HEAD^
+HEAD~2 
+git status:  changed files in working tree while not in index; changed files in index while not committed;
+Git diff: diff between working tree and index
+Git diff --cached: diff between index and commit
+Git diff HEAD: diff between working tree and latest commit 
+Git log: commit history
+
+working tree：就是你所工作在的目录，每当你在代码中进行了修改，working tree的状态就改变了。
+index file：是索引文件，它是连接working tree和commit的桥梁，每当我们使用git-add命令来登记后，index file的内容就改变了，此时index file就和working tree同步了。
+commit：是最后的阶段，只有commit了，我们的代码才真正进入了git仓库。我们使用git-commit就是将index file里的内容提交到commit中。
+
+
+Git 撤销：
+Git checkout file  discard changes in working directory
+git revert 是生成一个新的提交来撤销某次提交，此次提交之前的commit都会被保留
+git reset 是回到某次提交，提交及之前的commit都会被保留，但是此次之后的修改都会被退回到暂存区
+具体一个例子，假设有三个commit， git st:
+commit3: add test3.c
+commit2: add test2.c
+commit1: add test1.c
+当执行git revert HEAD~1时， commit2被撤销了
+git log可以看到：
+revert "commit2":this reverts commit 5fe21s2...
+commit3: add test3.c
+commit2: add test2.c
+commit1: add test1.c
+git status 没有任何变化
+如果换做执行git reset --soft(默认) HEAD~1后，运行git log
+commit2: add test2.c
+commit1: add test1.c
+运行git status， 则test3.c处于暂存区，准备提交。
+如果换做执行git reset --hard HEAD~1后，
+显示：HEAD is now at commit2，运行git log
+commit2: add test2.c
+commit1: add test1.c
+运行git st， 没有任何变化
+
+
+单文件撤退: 
+首先查看该文件的历史版本信息：git log Default@2x.png
+记录下需要恢复的commit版本号：如 9aa51d89799716aa68cff3f30c26f8815408e926
+恢复该文件：git reset 9aa51d89799716aa68cff3f30c26f8815408e926 Default@2x.png
+提交git:git commit -m "revert old file"
+
+
+ssh 设置：
+$ssh-keygen -t rsa -C "${YourEmail}"         # "-t rsa"表示使用密钥的加密类型，还可以为dsa；-C设置注释文字，比如你的邮箱“YourEmail”，不一定要是github注册邮箱
+Enter file in which to save the key (/Users/faner/.ssh/id_rsa): # 直接回车
+Enter passphrase (empty for no passphrase):                          # 输入密钥文件授权密码
+Enter same passphrase again:                                                  # 确认密钥文件授权密码
+Your identification has been saved in /Users/faner/.ssh/id_rsa.
+Your public key has been saved in /Users/faner/.ssh/id_rsa.pub.
+在 github-account-setting中add ssh key（public key）
