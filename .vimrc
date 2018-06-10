@@ -30,7 +30,7 @@ se smarttab
 au Filetype python se formatoptions+=r
 "au Filetype python se expandtab
 "au FileType python se smarttab
-au FileType python se fenc=utf-8
+au FileType python se fenc=chinese
 au BufNewFile *.py exec ":call PythonBegin()"
 
 se nowrap
@@ -42,7 +42,7 @@ se wildmenu
 se tags=./tags,tags,$HOME/rs/tags
 
 set fencs=ucs-bom,UTF-8,cp936,default,latin1
-set encoding=chinese 
+set encoding=chinese
 
 set list                
 set listchars=tab:>-,trail:-
@@ -57,7 +57,7 @@ map <C-K> ]czz
 map <C-M> :diffg<CR>
 
 map <C-N> :noh<CR>
-map <F10> :se enc=chinese<CR>
+"map <F10> :se enc=chinese<CR>
 map <F6> :se fdm=syntax<CR>
 map <F7> :se fdm=manual<CR>
 map <F8> :%s/\r//g<CR>
